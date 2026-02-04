@@ -64,3 +64,4 @@ service cloud.firestore {
     }
   }
 }
+// Here all of the firestore security rules published on firebase and it has control of who can write and read data 

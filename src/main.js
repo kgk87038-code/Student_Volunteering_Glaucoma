@@ -7,3 +7,4 @@ import router from "./router"
 createApp(App)
   .use(router)
   .mount("#app")
+// This is the main entry point for the vue application 

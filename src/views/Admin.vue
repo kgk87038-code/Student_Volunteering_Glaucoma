@@ -1,4 +1,4 @@
-<!--hiiiiiiiiiii-->
+<!--Top of the admin.vue page-->
 <template>
   <div class="mx-auto max-w-5xl px-4 py-6">
     <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -88,20 +88,20 @@ import {
   query,
   where
 } from "firebase/firestore"
-
+// This controls all of the laoding, and the admin errors and the pending approvals 
 const loading = ref(true)
 const requests = ref([])
 const error = ref("")
-
+// This line of code fetches all of the tasks and assignments and waits for the approval from the admin 
 onMounted(async () => {
   const [tasksSnap, assignmentsSnap] = await Promise.all([
     getDocs(collection(db, "tasks")),
     getDocs(query(collection(db, "assignments"), where("status", "==", "Awaiting Approval")))
   ])
-
+// This specifically maps all of the task specfic details to assignments for the display 
   const taskMap = new Map()
   tasksSnap.docs.forEach(d => taskMap.set(d.id, d.data()))
-
+// This prepares the assignment data for a review by the admin and conlcudes the data preparation 
   requests.value = assignmentsSnap.docs.map(d => {
     const data = d.data()
     const task = taskMap.get(data.taskId) || {}
@@ -118,17 +118,17 @@ onMounted(async () => {
 
   loading.value = false
 })
-
+// Here this handles all of the approvals done by the admin of a task that has been submitted by the student 
 const approve = async (r) => {
   const assignmentRef = doc(db, "assignments", r.assignmentId)
 
   error.value = ""
-
+// This uses a transaction in order to keep the updates of the task approval and the user updates in sync and the two happen together 
   try {
     await runTransaction(db, async (tx) => {
       const assignmentSnap = await tx.get(assignmentRef)
       if (!assignmentSnap.exists()) throw new Error("Assignment no longer exists.")
-
+// This line of code makes sure that the task is still existing and is awaiting approval 
       const data = assignmentSnap.data()
       if (data.status !== "Awaiting Approval") {
         throw new Error("Assignment is no longer awaiting approval.")
@@ -136,7 +136,7 @@ const approve = async (r) => {
       if (!data.userId) {
         throw new Error("Assignment has no user.")
       }
-
+// This makes sure that the assignment is set with a user that is valid and set and marks the task as being approved with the update assignment ref 
       const userRef = doc(db, "users", data.userId)
       tx.update(assignmentRef, { status: "Approved" })
       tx.update(userRef, {
@@ -144,14 +144,14 @@ const approve = async (r) => {
         points: increment(Number(r.points ?? 0))
       })
     })
-
+// This is where the update happens of the hours that are approved and points for the student 
     
     requests.value = requests.value.filter(x => x.assignmentId !== r.assignmentId)
   } catch (e) {
     error.value = e.message || "Unable to approve task."
   }
 }
-
+// This line of code takes of the task that has been approved from the admin list and below is the logout function and this logs out the admin and stops and complete the session 
 const logout = async () => {
   await signOut(getAuth())
   window.location.href = "/login"

@@ -1,3 +1,4 @@
+<!--This is the main page with the project and the info and navigation-->>
 <template>
   <div class="relative mx-auto max-w-5xl px-4 py-6 pt-24">
     
@@ -7,7 +8,7 @@
     <p class="mb-4 text-sm text-slate-300">
       Welcome to Glaucoma Care — a student volunteering platform specifically to help out with glaucoma patients.
     </p>
-
+<!--This section is the contents with the images and gives info on glaucoma and volunteering -->
     <div class="space-y-4">
       <section class="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
         <h2 class="text-lg font-semibold">Why student volunteering matters</h2>
@@ -186,7 +187,7 @@
           </li>
         </ul>
       </section>
-
+<!--This is the navigation actions for the user authentication -->
       <section class="flex flex-wrap gap-3 rounded-xl border border-slate-800 bg-slate-900/60 p-4">
         <router-link
           to="/login"

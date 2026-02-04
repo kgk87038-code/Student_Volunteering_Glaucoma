@@ -1,3 +1,4 @@
+<!--This is the volunteering hubs and the students look and enroll in the task-->
 <template>
   <div class="mx-auto max-w-5xl px-4 py-6">
     <h1 class="mb-4 text-2xl font-semibold md:text-3xl">Volunteering hubs</h1>
@@ -7,14 +8,14 @@
     <p class="mb-4 text-sm text-slate-300">
       There are multiple students that can do one task since there are several patients.
     </p>
-
+<!--This is the loader whilst fectching the tasks and assignments -->
     <div
       v-if="loading"
       class="rounded-xl border border-slate-800 bg-slate-900/60 p-4"
     >
       Loading…
     </div>
-
+<!--This shows all of the tasks which are available and the current status of enrollment-->
     <div v-else class="space-y-3">
       <button
         v-if="hasInProgress"
@@ -47,7 +48,7 @@
           </span>
         </div>
 
-        
+       <!--This menables the student to be able to enroll in a task if it has not been assigned already-->
         <button
           v-if="!getAssignment(task.id)"
           class="mt-3 inline-flex items-center justify-center rounded-lg border border-indigo-600 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500"
@@ -102,7 +103,7 @@ import {
   query,
   where
 } from "firebase/firestore"
-
+// These are all of the state variables for the errors, loading, and the user assignments 
 const loading = ref(true)
 const error = ref("")
 const tasks = ref([])
@@ -112,7 +113,7 @@ const hasInProgress = computed(() =>
 )
 
 const auth = getAuth()
-
+// When the page has loaded this line of code fetches the tasks and the user assignments 
 onMounted(() => {
   onAuthStateChanged(auth, async (user) => {
     if (!user) {
@@ -138,7 +139,7 @@ onMounted(() => {
     }
   })
 })
-
+// This line of code enrolls the student that has logged in into a task that has been selected 
 const enroll = async (taskId) => {
   const user = auth.currentUser
   if (!user) return
@@ -171,7 +172,7 @@ const enroll = async (taskId) => {
     error.value = e.message || "Unable to enroll in task."
   }
 }
-
+// This returns the assignment for a certian task if the user is actually enrolled 
 const getAssignment = (taskId) =>
   assignments.value.find(a => a.taskId === taskId)
 

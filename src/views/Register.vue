@@ -1,3 +1,4 @@
+<!--Here is the page for the students to register with validation of age and password-->
 <template>
   <div class="mx-auto max-w-5xl px-4 py-6">
     <h1 class="mb-2 text-2xl font-semibold md:text-3xl">Student Registration</h1>
@@ -5,7 +6,7 @@
     <p class="text-slate-400">
       Please note, we can only accept applications from those over 18 years old.
     </p>
-
+<!--This is the overall registration form to collect all of the students details -->
     <div class="mt-4 max-w-xl space-y-3 rounded-xl border border-slate-800 bg-slate-900/60 p-4">
       <label class="block text-sm font-semibold text-slate-200">First name</label>
       <input
@@ -48,21 +49,21 @@
         type="password"
         class="w-full rounded-lg border border-slate-800 bg-transparent px-3 py-2 text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/60"
       />
-
+<!--This shows all of the validation or the errors in registration-->
       <div
         v-if="error"
         class="rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-200"
       >
         {{ error }}
       </div>
-
+<!--This shows successful regisatration prompt-->
       <div
         v-if="success"
         class="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-200"
       >
         {{ success }}
       </div>
-
+<!--This submits the registration data to create an account and the validation-->
       <button
         class="inline-flex items-center justify-center rounded-lg border border-indigo-600 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500"
         @click="register"
@@ -83,7 +84,7 @@ import { ref } from "vue"
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut } from "firebase/auth"
 import { db } from "../firebase"
 import { doc, setDoc } from "firebase/firestore"
-
+// Here are all of the vue and the firebase imports for the student to register and the data storage 
 export default {
   setup() {
     const firstName = ref("")
@@ -94,11 +95,11 @@ export default {
     const password = ref("")
     const error = ref("")
     const success = ref("")
-
+// This is where all of the user input alongside the feedback is stored for the registering form
     const register = async () => {
       error.value = ""
       success.value = ""
-
+// This allows to make a new student account as well as storing the data and validating all of the input 
       if (!firstName.value || !lastName.value) {
         error.value = "Please enter your first and last name."
         return
@@ -113,7 +114,7 @@ export default {
         error.value = "Please enter your date of birth."
         return
       }
-
+// This is where the calculation is done in order to implement the age requirement is 18 years
       const today = new Date()
       const birthDate = new Date(dob.value)
       const age = today.getFullYear() - birthDate.getFullYear()
@@ -136,7 +137,7 @@ export default {
         error.value = "Password must include at least one special character."
         return
       }
-
+// This is where a new authenticated user is created correctly and this is done by using firebase authentication
       try {
         const auth = getAuth()
         const cred = await createUserWithEmailAndPassword(
@@ -144,7 +145,7 @@ export default {
           email.value,
           password.value
         )
-
+// This is where the additional user profile is stored within firestore 
         await setDoc(doc(db, "users", cred.user.uid), {
           firstName: firstName.value,
           lastName: lastName.value,

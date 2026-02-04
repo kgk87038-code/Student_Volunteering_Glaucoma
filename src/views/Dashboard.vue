@@ -196,7 +196,7 @@ const downloadCertificate = () => {
 
   pdf.save("volunteering-certificate.pdf")
 }
-
+// This line of code stores all of the students profiles and all of the progress data for the dashboard
 const loading = ref(true)
 const firstName = ref("")
 const lastName = ref("")
@@ -238,14 +238,14 @@ const avatarClass = computed(() => {
   const index = key ? hash % palettes.length : 0
   return palettes[index]
 })
-
+// This specifically determines the view of the dashbaord based on the user role 
 const isAdmin = computed(() => role.value === "admin")
-
+// This is where the calculation happens of the task completion progress based on the tasks that have been approved
 const progressPercent = computed(() => {
   if (!assignments.value.length) return 0
   return Math.round((approvedCount.value / assignments.value.length) * 100)
 })
-
+// This makes the download accessible only when the tasks are approved
 const canDownloadCertificate = computed(() =>
   assignments.value.length > 0 && assignments.value.every(a => a.status === "Approved")
 )
@@ -284,7 +284,7 @@ let unsubscribeUser = null
 let unsubscribeAssignments = null
 let unsubscribeTasks = null
 let unsubscribePending = null
-
+// This subscribes to updates that are real time for the user data tasks and assignments 
 const subscribe = (uid) => {
   unsubscribeUser?.()
   unsubscribeAssignments?.()
@@ -315,7 +315,7 @@ const subscribe = (uid) => {
       pendingApprovals.value = 0
     }
   })
-
+// The admin gets the real time updates for the approvals that are pending 
   unsubscribeAssignments = onSnapshot(
     query(collection(db, "assignments"), where("userId", "==", uid)),
     (snap) => {
@@ -334,7 +334,7 @@ const logout = async () => {
   await signOut(getAuth())
   window.location.href = "/"
 }
-
+// Manages the evidence submission and gives an update on the task status 
 const submitEvidence = async (task) => {
   const user = getAuth().currentUser
   if (!user) return
@@ -360,7 +360,7 @@ const submitEvidence = async (task) => {
       if (data.status !== "In Progress") {
         throw new Error("Task is not in progress.")
       }
-
+// This part of the code uses a transaction to update the status and task evidence 
       tx.update(assignmentRef, {
         evidenceText: text,
         evidenceSubmittedAt: serverTimestamp(),
@@ -385,7 +385,7 @@ onMounted(() => {
     loading.value = false
   })
 })
-
+// This redirects the users that arent authenticated and configues the dashboard data 
 onUnmounted(() => {
   unsubscribeUser?.()
   unsubscribeAssignments?.()

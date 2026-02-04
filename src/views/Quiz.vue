@@ -1,10 +1,11 @@
+<!--This is the quiz page and has multiple questions and is used for asseing glaucoma awarenss and unlcok the hubs and the tasks -->
 <template>
   <div class="mx-auto max-w-5xl px-4 py-6">
     <h1 class="mb-2 text-2xl font-semibold md:text-3xl">Glaucoma Awareness Quiz</h1>
     <p class="text-slate-400">
       Complete this quiz to unlock volunteering tasks.
     </p>
-
+<!--This shows all of the quiz questions and they are made in a multiple choice format-->
     <div class="mt-4 space-y-3">
       <div v-for="(q, i) in questions" :key="i" class="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
         <p class="font-semibold">Q{{ i + 1 }}. {{ q.text }}</p>
@@ -30,14 +31,14 @@
         </div>
       </div>
     </div>
-
+<!--Here is the submitting of the answers to the quiz and does a calculation of the score-->
     <button
       class="mt-4 inline-flex items-center justify-center rounded-lg border border-indigo-600 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500"
       @click="submit"
     >
       Submit quiz
     </button>
-
+<!--Shows the score of the quiz and gives access to the volunteering tasks-->
     <div
       v-if="resultReady"
       class="mt-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-emerald-200"
@@ -72,7 +73,7 @@ import { ref, computed } from "vue"
 import { getAuth } from "firebase/auth"
 import { db } from "../firebase"
 import { doc, updateDoc } from "firebase/firestore"
-
+// These are all of the imports of vue and firebase and is used for the data storage and the quiz logic 
 export default {
   setup() {
     const questions = ref([
@@ -117,23 +118,23 @@ export default {
         correct: 0
       }
     ])
-
+// for the const questions this is where all of the quiz questiions are stored, the correct answers and the answer options 
     const answers = ref(Array(questions.value.length).fill(null))
     const showErrors = ref(false)
     const resultReady = ref(false)
     const serverError = ref("")
     const score = ref(0)
-
+// The user selected answers for all of the specifc questions are stored here
     const bandText = computed(() => {
       if (score.value <= 50) return "Easy tasks unlocked (Hospital)"
       if (score.value <= 80) return "Easy and medium tasks unlocked (Old Age Homes)"
       return "All tasks unlocked (Community Centres)"
     })
-
+// Determines the hubs and task that are unlocked based off of the score from the quiz
     const submit = async () => {
       showErrors.value = true
       serverError.value = ""
-
+// This is where the answers are validated and the scores are calculated and it saves all of the result to the firestore which is the database
       if (answers.value.includes(null)) return
 
       let correct = 0

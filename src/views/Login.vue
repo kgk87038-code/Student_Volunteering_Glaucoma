@@ -1,8 +1,9 @@
+<!--This is the main login page allowing the students and the admi to sign in too-->
 <template>
   <div class="mx-auto max-w-5xl px-4 py-6">
     <h1 class="mb-2 text-2xl font-semibold md:text-3xl">Login</h1>
     <p class="text-slate-400">Sign in to your account.</p>
-
+<!--This is the main login form for the email and the password authentication-->
     <div class="mt-4 max-w-xl rounded-xl border border-slate-800 bg-slate-900/60 p-4">
       <label class="block text-sm font-semibold text-slate-200">Email</label>
       <input
@@ -20,7 +21,7 @@
         ref="passwordInput"
         class="mt-2 w-full rounded-lg border border-slate-800 bg-transparent px-3 py-2 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/60"
       />
-
+<!--This is the authentication and navigaion actions -->
       <div class="mt-4 flex flex-wrap gap-3">
         <button
           class="inline-flex items-center justify-center rounded-lg border border-indigo-600 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500"
@@ -41,7 +42,7 @@
           Register
         </router-link>
       </div>
-
+<!--This enables the users to ask to reset their password-->
       <button
         class="mt-3 text-sm text-indigo-400 hover:text-indigo-300"
         @click="resetPassword"
@@ -68,7 +69,7 @@
 
 <script>
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth"
-
+// This line of code is the firebase autentication functions for the login and the password recovery 
 export default {
   data() {
     return { email: "", password: "", error: "", success: "" }
@@ -126,3 +127,5 @@ export default {
   }
 }
 </script>
+<!-- With the async login part of code this authenticats the user and gives them a redirectory to the dashboard-->
+ <!--For the async password this gives a password reset while using the firebase authentication-->
