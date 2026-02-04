@@ -26,6 +26,7 @@ class="rounded-xl border border-slate-800 bg-slate-900/60 p-4"
 class="rounded-lg border border-indigo-600 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500"
 ```
 
+
 #### Secondary button
 ```
 class="rounded-lg border border-slate-700 px-3 py-2 text-sm font-semibold text-slate-100 transition hover:border-indigo-400"
@@ -53,3 +54,5 @@ class="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-emeral
 npm install
 npm run dev
 ```
+here are all of the firebase database screenshot:
+<img width="1468" height="845" alt="Screenshot 2026-02-04 at 11 26 06" src="https://github.com/user-attachments/assets/e4001b83-85ab-4c15-ba5e-85ab2f9578ad" />
